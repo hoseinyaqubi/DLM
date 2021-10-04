@@ -7,7 +7,6 @@ from math import floor , pow , log
 import os
 
 def download_file(url , address = ''):
-   import pdb;pdb.set_trace()
    '''this func download any file in internet '''
    file = rq.get(url , stream= True)
    total_bit = int(file.headers.get('Content-Length' , 1024))
