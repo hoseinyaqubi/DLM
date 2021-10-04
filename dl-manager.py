@@ -1,10 +1,13 @@
 import requests  as rq
-from requests.exceptions import ConnectionError
+from requests.exceptions import ConnectionError 
+from urllib.request import urlopen
+from urllib.error import URLError
 from tqdm import tqdm 
 from math import floor , pow , log
 import os
 
 def download_file(url , address = ''):
+   import pdb;pdb.set_trace()
    '''this func download any file in internet '''
    file = rq.get(url , stream= True)
    total_bit = int(file.headers.get('Content-Length' , 1024))
@@ -13,7 +16,13 @@ def download_file(url , address = ''):
    total_size = (total_bit/pow(1024 , scale_paw) * pow(1000, scale_paw))
 
    # درست کردن نام فایل 
-   file_name = url.split(r'/')[-1]
+   try:
+      url_open= urlopen(url)
+      name = os.path.basename(url_open.url)
+   except URLError:
+      name = url.split(r'/')[-1]
+   
+   file_name = name
    if address == '' :
       windowsname = os.getlogin()
       file_address = 'C:\\Users\\'+windowsname+'\\Downloads\\'+file_name
@@ -38,5 +47,5 @@ try :
    download_file(url , address)
    print('Download voplit')
 
-except ConnectionError:
+except ConnectionError :
    print('Check your internet connection')
